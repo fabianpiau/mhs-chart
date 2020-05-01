@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: mhs-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mhs
+spec:
+  hosts:
+  - mhs.example.com
+  gateways:
+  - mhs-gateway
+  - mesh
+  http:
+    - match:
+      route:
+        - destination:
+            host: mhs.application.svc.cluster.local
+            port:
+              number: 80
