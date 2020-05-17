@@ -25,6 +25,8 @@ spec:
   - mesh
   http:
     - match:
+      - uri:
+          prefix: /
       route:
         - destination:
             host: mhs.application.svc.cluster.local
